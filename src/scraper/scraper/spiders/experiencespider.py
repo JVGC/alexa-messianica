@@ -16,5 +16,5 @@ class ExperienceSpider(Spider):
             "audio_url": f"https://www.messianica.org.br{response.css('audio#player').css('source').xpath('@src').get()}",
             "content": "".join(response.css("section#wa-conteudo::text").getall())
             .strip()
-            .replace("\r\r", "%0a"),
+            .replace("\r\r", " "),
         }
