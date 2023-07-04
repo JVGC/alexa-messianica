@@ -21,7 +21,7 @@ class ExperienceSheetRepository:
             os.path.join(os.getcwd(), "spreadsheet", CLIENT_KEY_FILENAME), scope
         )
         client = gspread.authorize(creds)
-        self.sheet = client.open(SPREADSHEET_FILENAME).worksheet("experience")
+        self.sheet = client.open(SPREADSHEET_FILENAME).worksheet(SHEET_NAME)
 
     def create(
         self,
@@ -45,8 +45,8 @@ class ExperienceSheetRepository:
         self.sheet.append_row(experience_obj)
 
     def getByDate(self, date) -> Experience:
-        all_values = self.sheet.get_all_values()
-        latest_experience = all_values[-1]
+        row = self.sheet.find(date, in_column=0).row
+        latest_experience = self.sheet.get_values(f"A{row}:G{row}")[0]
         return Experience(
             _id=latest_experience[0],
             date=latest_experience[1],
