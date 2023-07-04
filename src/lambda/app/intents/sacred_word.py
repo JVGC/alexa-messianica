@@ -7,27 +7,27 @@ from ask_sdk_model import Response
 
 from datetime import date
 
-from app.spreadsheet.experience_repository import ExperienceSheetRepository
+from app.spreadsheet.sacred_word_repository import SacredWordSheetRepository
 
 
-class TodaysExperienceIntentHandler(AbstractRequestHandler):
+class TodaysSacredWordIntentHandler(AbstractRequestHandler):
     """Handler for Today's Sacred Word Intent."""
 
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return ask_utils.is_intent_name("TodaysExperienceIntent")(handler_input)
+        return ask_utils.is_intent_name("TodaysSacredWordIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
 
-        experience_repository = ExperienceSheetRepository()
-        experience = experience_repository.getByDate(
+        sacred_word_repository = SacredWordSheetRepository()
+        sacred_word = sacred_word_repository.getByDate(
             date.today().strftime(format="%d/%m/%Y")
         )
 
         return (
             handler_input.response_builder.speak(
-                f"Experiência de fé de: {experience.person_name}. {experience.church}. {experience.content}"
+                f"Leitura do Ensinamento: {sacred_word.title}. {sacred_word.content}"
             )
             # .ask("add a reprompt if you want to keep the session open for the user to respond")
             .response

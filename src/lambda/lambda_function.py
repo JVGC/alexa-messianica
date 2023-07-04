@@ -13,6 +13,7 @@ from app.intents.default import (
 )
 from app.intents.launch import LaunchRequestHandler
 from app.intents.experience import TodaysExperienceIntentHandler
+from app.intents.sacred_word import TodaysSacredWordIntentHandler
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -28,6 +29,7 @@ sb = SkillBuilder()
 
 sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(TodaysExperienceIntentHandler())
+sb.add_request_handler(TodaysSacredWordIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(FallbackIntentHandler())
