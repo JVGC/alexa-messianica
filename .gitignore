@@ -161,3 +161,7 @@ cython_debug/
 
 #Alexa
 *.zip
+
+# Google Credentials
+
+client_key.json
