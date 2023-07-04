@@ -3,12 +3,13 @@ from dotenv import load_dotenv
 from scrapy.crawler import CrawlerProcess
 from scrapy.settings import Settings
 
-from mongo.experience_repository import ExperienceMongoRepository
-
+from spreadsheet.experience_repository import ExperienceSheetRepository
 from scraper.scraper import settings as scraper_settings
 from scraper.scraper.spiders.experiencespider import (
     ExperienceSpider,
 )
+
+from scraper.scraper.spiders.sacredwordspider import SacredWordSpider
 
 
 def call_spider():
@@ -22,6 +23,13 @@ def call_spider():
 
 
 def main():
+    # experience_repository = ExperienceSheetRepository()
+
+    # experience = experience_repository.getByDate(
+    # date.today().strftime(format="%d/%m/%Y")
+    # )
+
+    # print(experience)
     call_spider()
 
 
