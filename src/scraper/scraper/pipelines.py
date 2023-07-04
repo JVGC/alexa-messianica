@@ -8,12 +8,12 @@
 from itemadapter import ItemAdapter
 from datetime import date
 
-from mongo.experience_repository import ExperienceMongoRepository
+from spreadsheet.spreadsheet_repository import SpreadSheetRepository
 
 
 class ExperiencePipeline:
     def __init__(self) -> None:
-        self.experience_repository = ExperienceMongoRepository()
+        self.experience_repository = SpreadSheetRepository()
 
     def process_item(self, item, spider):
         print(item.keys())
