@@ -8,9 +8,10 @@ from models.experience import Experience
 
 CLIENT_KEY_FILENAME = "client_key.json"
 SPREADSHEET_FILENAME = "Ensinamento do Dia"
+SHEET_NAME = "experience"
 
 
-class SpreadSheetRepository:
+class ExperienceSheetRepository:
     def __init__(self) -> None:
         scope = [
             "https://www.googleapis.com/auth/drive",
@@ -19,7 +20,8 @@ class SpreadSheetRepository:
         creds = ServiceAccountCredentials.from_json_keyfile_name(
             os.path.join(os.getcwd(), "spreadsheet", CLIENT_KEY_FILENAME), scope
         )
-        self.client = gspread.authorize(creds)
+        client = gspread.authorize(creds)
+        self.sheet = client.open(SPREADSHEET_FILENAME).worksheet("experience")
 
     def create(
         self,
@@ -30,7 +32,6 @@ class SpreadSheetRepository:
         audio_url: str,
         url: str,
     ) -> Experience:
-        sheet = self.client.open(SPREADSHEET_FILENAME).sheet1
         experience_obj = [
             str(uuid4()),
             date,
@@ -41,12 +42,10 @@ class SpreadSheetRepository:
             url,
         ]
 
-        sheet.append_row(experience_obj)
+        self.sheet.append_row(experience_obj)
 
     def getByDate(self, date) -> Experience:
-        sheet = self.client.open(SPREADSHEET_FILENAME).sheet1
-
-        all_values = sheet.get_all_values()
+        all_values = self.sheet.get_all_values()
         latest_experience = all_values[-1]
         return Experience(
             _id=latest_experience[0],
