@@ -1,13 +1,12 @@
-import ask_sdk_core.utils as ask_utils
-
-from ask_sdk_core.dispatch_components import AbstractRequestHandler
-from ask_sdk_core.handler_input import HandlerInput
-
-from ask_sdk_model import Response
-
 from datetime import date
 
-from app.spreadsheet.experience_repository import ExperienceSheetRepository
+import ask_sdk_core.utils as ask_utils
+from ask_sdk_core.dispatch_components import AbstractRequestHandler
+from ask_sdk_core.handler_input import HandlerInput
+from ask_sdk_model import Response
+
+
+from app.spreadsheet import get_experience_by_date
 
 
 class TodaysExperienceIntentHandler(AbstractRequestHandler):
@@ -20,10 +19,7 @@ class TodaysExperienceIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
 
-        experience_repository = ExperienceSheetRepository()
-        experience = experience_repository.getByDate(
-            date.today().strftime(format="%d/%m/%Y")
-        )
+        experience = get_experience_by_date(date.today().strftime(format="%d/%m/%Y"))
 
         return (
             handler_input.response_builder.speak(
