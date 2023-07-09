@@ -1,2 +1,2 @@
-# messianica-bot
-Bot for Igreja Messianica Mundial do Brasil
+# Alexa Messianica
+Alexa Skill que lê o Ensinamento de Meishu-Sama do Dia, assim como a experiẽncia de fé.
