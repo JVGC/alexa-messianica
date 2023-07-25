@@ -2,7 +2,7 @@ import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-from app.models import Experience, SacredWord
+from app.models import SacredWord
 
 
 CLIENT_KEY_FILENAME = "client_key.json"
@@ -20,21 +20,6 @@ def _connect_spreadsheet(sheet_name: str) -> gspread.Worksheet:
     )
     client = gspread.authorize(creds)
     return client.open(SPREADSHEET_FILENAME).worksheet(sheet_name)
-
-
-def get_experience_by_date(date: str) -> Experience:
-    sheet = _connect_spreadsheet("experience")
-    row = sheet.find(date, in_column=0).row
-    latest_experience = sheet.get_values(f"A{row}:G{row}")[0]
-    return Experience(
-        _id=latest_experience[0],
-        date=latest_experience[1],
-        person_name=latest_experience[2],
-        church=latest_experience[3],
-        content=latest_experience[4],
-        audio_url=latest_experience[5],
-        url=latest_experience[6],
-    )
 
 
 def get_sacred_word_by_date(date: str) -> SacredWord:
