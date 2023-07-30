@@ -17,7 +17,7 @@ class HelpIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "You can say hello to me! How can I help?"
+        speak_output = "Olá! Ouvir o ensinamento de Meishu-sama é a melhor forma de começar o dia. Como posso te ajudar?"
 
         return (
             handler_input.response_builder.speak(speak_output)
@@ -37,7 +37,9 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Goodbye!"
+        speak_output = (
+            "Não se esqueça de aplicar os ensinamentos em sua vida! Até mais!"
+        )
 
         return handler_input.response_builder.speak(speak_output).response
 
@@ -52,12 +54,9 @@ class FallbackIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         logger.info("In FallbackIntentHandler")
-        speech = (
-            "Hmm, I'm not sure. You can say Hello or Help. What would you like to do?"
-        )
-        reprompt = "I didn't catch that. What can I help you with?"
+        speech = "Desculpe, eu não sei te ajudar com isso. Tente novamente"
 
-        return handler_input.response_builder.speak(speech).ask(reprompt).response
+        return handler_input.response_builder.speak(speech).ask(speech).response
 
 
 class SessionEndedRequestHandler(AbstractRequestHandler):
@@ -89,7 +88,7 @@ class IntentReflectorHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         intent_name = ask_utils.get_intent_name(handler_input)
-        speak_output = "You just triggered " + intent_name + "."
+        speak_output = "Você acabou de ativar a intent " + intent_name + "."
 
         return (
             handler_input.response_builder.speak(speak_output)
@@ -112,7 +111,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         # type: (HandlerInput, Exception) -> Response
         print(exception)
 
-        speak_output = "Sorry, I had trouble doing what you asked. Please try again."
+        speak_output = "Desculpe, tive problemas para fazer o que você pediu. Por favor, tente novamente."
 
         return (
             handler_input.response_builder.speak(speak_output)
