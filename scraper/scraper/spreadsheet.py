@@ -16,7 +16,7 @@ def _connect_spreadsheet(sheet_name: str) -> gspread.Worksheet:
         "https://www.googleapis.com/auth/drive.file",
     ]
     creds = ServiceAccountCredentials.from_json_keyfile_name(
-        os.path.join(os.getcwd(), "scraper", "scraper", CLIENT_KEY_FILENAME),
+        os.path.join(os.getcwd(), "scraper", CLIENT_KEY_FILENAME),
         scope,
     )
     client = gspread.authorize(creds)
