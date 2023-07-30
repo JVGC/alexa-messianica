@@ -16,7 +16,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Olá bom dia! Qual ensinamento gostaria que eu lesse?"
+        speak_output = "Olá! Qual ensinamento gostaria que eu lesse?"
 
         return (
             handler_input.response_builder.speak(speak_output)
