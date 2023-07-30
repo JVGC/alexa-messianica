@@ -22,10 +22,6 @@ class TodaysSacredWordIntentHandler(AbstractRequestHandler):
 
         sacred_word = get_sacred_word_by_date(date.today().strftime(format="%d/%m/%Y"))
 
-        return (
-            handler_input.response_builder.speak(
-                f"Leitura do Ensinamento: {sacred_word.title}. {sacred_word.content}"
-            )
-            # .ask("add a reprompt if you want to keep the session open for the user to respond")
-            .response
-        )
+        return handler_input.response_builder.speak(
+            f"Leitura do Ensinamento: {sacred_word.title}. {sacred_word.content}"
+        ).response
