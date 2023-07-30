@@ -1,7 +1,7 @@
 """  Define your item pipelines here """
 from datetime import date
 
-from scraper.scraper.spreadsheet import create_experience, create_sacred_word
+from scraper.spreadsheet import create_experience, create_sacred_word
 
 
 class ExperiencePipeline:

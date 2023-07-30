@@ -3,7 +3,7 @@ import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-from scraper.scraper.models import Experience, SacredWord
+from scraper.models import Experience, SacredWord
 
 
 CLIENT_KEY_FILENAME = "client_key.json"
