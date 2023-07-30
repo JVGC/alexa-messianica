@@ -27,7 +27,6 @@ def call_experience_spider():
 
 
 def main():
-    call_experience_spider()
     call_sacred_word_spider()
 
 
