@@ -53,7 +53,6 @@ class FallbackIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.info("In FallbackIntentHandler")
         speech = "Desculpe, eu não sei te ajudar com isso. Tente novamente"
 
         return handler_input.response_builder.speak(speech).ask(speech).response
