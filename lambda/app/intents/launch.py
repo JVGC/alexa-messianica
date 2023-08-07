@@ -1,9 +1,12 @@
+from datetime import date
 import ask_sdk_core.utils as ask_utils
 
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.handler_input import HandlerInput
 
 from ask_sdk_model import Response
+
+from app.spreadsheet import get_sacred_word_by_date
 
 
 class LaunchRequestHandler(AbstractRequestHandler):
@@ -16,10 +19,12 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Olá! Qual ensinamento gostaria que eu lesse?"
+        sacred_word = get_sacred_word_by_date(date.today().strftime(format="%d/%m/%Y"))
 
         return (
-            handler_input.response_builder.speak(speak_output)
-            .ask(speak_output)
+            handler_input.response_builder.speak(
+                f"Leitura do Ensinamento: {sacred_word.title}. {sacred_word.content.replace('[...]', ' ')}"
+            )
+            .set_should_end_session(True)
             .response
         )
