@@ -4,7 +4,7 @@ Alexa Skill que lê o Ensinamento de Meishu-Sama do Dia.
 
 ## Sobre o projeto
 
-Skill de conversação para Alexa com objetivo de ler os ensinamento de Meishu-Sama de acordo com o site da [Igreja Mêssianica Mundial do Brasil](https://www.messianica.org.br/).
+Skill de conversação para Alexa com objetivo de ler os ensinamento de Meishu-Sama retirados do site da [Igreja Mêssianica Mundial do Brasil](https://www.messianica.org.br/).
 
 Esta Skill consome os dados de um google sheet, onde é armazenada os ensinamentos do dia que são postados no site da Igreja. Esse
 
