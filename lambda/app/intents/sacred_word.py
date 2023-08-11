@@ -22,6 +22,15 @@ class TodaysSacredWordIntentHandler(AbstractRequestHandler):
 
         sacred_word = get_sacred_word_by_date(date.today().strftime(format="%d/%m/%Y"))
 
+        if not sacred_word:
+            return (
+                handler_input.response_builder.speak(
+                    "O ensinamento de hoje ainda não está disponível. Tente novamente mais tarde."
+                )
+                .set_should_end_session(True)
+                .response
+            )
+
         return (
             handler_input.response_builder.speak(
                 f"Leitura do Ensinamento: {sacred_word.title}. {sacred_word.content}"
