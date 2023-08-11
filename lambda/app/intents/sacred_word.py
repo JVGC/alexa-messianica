@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime, timezone, timedelta
 
 import ask_sdk_core.utils as ask_utils
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
@@ -20,7 +20,10 @@ class TodaysSacredWordIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
 
-        sacred_word = get_sacred_word_by_date(date.today().strftime(format="%d/%m/%Y"))
+        local_date = datetime.now(tz=timezone(timedelta(hours=-3))).strftime(
+            format="%d/%m/%Y"
+        )
+        sacred_word = get_sacred_word_by_date(local_date)
 
         if not sacred_word:
             return (
