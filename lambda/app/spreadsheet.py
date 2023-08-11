@@ -24,7 +24,12 @@ def _connect_spreadsheet(sheet_name: str) -> gspread.Worksheet:
 
 def get_sacred_word_by_date(date: str) -> SacredWord:
     sheet = _connect_spreadsheet("sacred_word")
-    row = sheet.find(date, in_column=0).row
+    cell = sheet.find(date, in_column=0)
+
+    if not cell:
+        return None
+
+    row = cell.row
     latest_sacred_word = sheet.get_values(f"A{row}:F{row}")[0]
     return SacredWord(
         _id=latest_sacred_word[0],
