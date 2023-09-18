@@ -3,7 +3,7 @@ import os
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-from scraper.models import Experience, SacredWord
+from scraper.models import SacredWord
 
 
 CLIENT_KEY_FILENAME = "client_key.json"
@@ -21,30 +21,6 @@ def _connect_spreadsheet(sheet_name: str) -> gspread.Worksheet:
     )
     client = gspread.authorize(creds)
     return client.open(SPREADSHEET_FILENAME).worksheet(sheet_name)
-
-
-def create_experience(
-    date: str,
-    person_name: str,
-    church: str,
-    content: str,
-    audio_url: str,
-    url: str,
-) -> Experience:
-    experience = Experience(
-        _id=str(uuid4()),
-        date=date,
-        person_name=person_name,
-        church=church,
-        content=content,
-        audio_url=audio_url,
-        url=url,
-    )
-
-    sheet = _connect_spreadsheet("experience")
-    sheet.append_row(experience.__list__())
-
-    return experience
 
 
 def create_sacred_word(

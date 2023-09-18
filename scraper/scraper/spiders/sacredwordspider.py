@@ -5,7 +5,9 @@ from scrapy.http.response.html import HtmlResponse
 
 class SacredWordSpider(Spider):
     name = "sacred_word"
-    start_urls = ["https://www.messianica.org.br/escrito-divino"]
+    start_urls = [
+        f"https://www.messianica.org.br/escrito-divino?d={date.today().strftime(format='%d/%m/%Y')}"
+    ]
 
     def parse(self, response: HtmlResponse):
         yield {

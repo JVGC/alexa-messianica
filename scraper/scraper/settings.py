@@ -13,4 +13,4 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 # update the pipelines to this
-ITEM_PIPELINES = {"scraper.pipelines.ExperiencePipeline": 300}
+ITEM_PIPELINES = {"scraper.pipelines.InsertPipeline": 300}
