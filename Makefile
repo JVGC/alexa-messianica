@@ -11,3 +11,15 @@ help:
 .PHONY: lambda-zip
 lambda-zip: ## Create a zip file for Alexa Lambda Function
 	@zip -r lambda.zip ./lambda -x "**__pycache__**"
+
+.PHONY: setup
+setup: ## Setup Python Environments and Install Dependencies
+	chmod +x ./scripts/install.sh && ./scripts/install.sh
+
+.PHONY: scrape
+scrape: ## Scrape today's sacred word
+	chmod +x ./scripts/scrape.sh && ./scripts/scrape.sh
+
+.PHONY: setup-cronjob
+setup-cronjob: ## Setup Cronjob for scraping
+	chmod +x ./scripts/setup-cronjob.sh && ./scripts/setup-cronjob.sh
