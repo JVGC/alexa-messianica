@@ -1,12 +1,8 @@
-#install a python virtual environment
-python3 -m venv python_env
-
-#activate the python virtual environment
-source python_env/bin/activate
+#Install poetry
 pip install poetry
 
-#install any python modules specified in the requirements.txt file
+#Install dependencies
 poetry config virtualenvs.create false && poetry install
 
-#install scrapy
+#Install scrapy
 pip3 install wheel scrapy
