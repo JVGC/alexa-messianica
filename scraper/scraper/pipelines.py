@@ -1,7 +1,7 @@
 """  Define your item pipelines here """
 from datetime import date
 
-from scraper.spreadsheet import create_sacred_word
+from scraper.spreadsheet import create_sacred_word, get_sacred_word_by_date
 
 
 MONTHS = {
@@ -35,6 +35,11 @@ class InsertPipeline:
             and item["date"][2] != str(date.today().year)
         ):
             print("Today's sacred word is not available yet")
+            return item
+
+        already_exists = get_sacred_word_by_date(date)
+        if already_exists:
+            print("Today's sacred word already scrapped. Skipping...")
             return item
 
         print("Scrapping today's sacred word")
