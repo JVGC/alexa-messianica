@@ -37,7 +37,9 @@ class InsertPipeline:
             print("Today's sacred word is not available yet")
             return item
 
-        already_exists = get_sacred_word_by_date(date)
+        already_exists = get_sacred_word_by_date(
+            date.today().strftime(format="%d/%m/%Y")
+        )
         if already_exists:
             print("Today's sacred word already scrapped. Skipping...")
             return item
