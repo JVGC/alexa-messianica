@@ -1,3 +1,3 @@
 #!/bin/bash
-cd ../scraper
+cd scraper
 scrapy crawl sacred_word
