@@ -1,3 +1,3 @@
 #!/bin/bash
 cd scraper
-scrapy crawl sacred_word
+poetry run scrapy crawl sacred_word
