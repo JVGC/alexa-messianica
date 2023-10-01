@@ -4,7 +4,9 @@ curl -sSL https://install.python-poetry.org | python3 -
 export PATH="/home/ubuntu/.local/bin:$PATH"
 
 #Install dependencies
-poetry config virtualenvs.create false && poetry install
+poetry install
+
+poetry shell
 
 #Install scrapy
 pip3 install wheel scrapy
