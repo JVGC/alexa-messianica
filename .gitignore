@@ -161,6 +161,7 @@ cython_debug/
 
 #Alexa
 *.zip
+*.pem
 
 # Google Credentials
 

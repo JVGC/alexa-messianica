@@ -8,7 +8,5 @@ export PATH="/home/ubuntu/.local/bin:$PATH"
 #Install dependencies
 poetry install
 
-poetry shell
-
 #Install scrapy
 pip3 install wheel scrapy
