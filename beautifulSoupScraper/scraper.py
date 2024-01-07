@@ -103,7 +103,12 @@ class SacredWordSpider:
         )
         date_str = soup.select_one("h1").get_text(strip=True)
         url = self.start_url
-        audio_url = f"https://www.messianica.org.br{soup.select_one('audio#player source')['src']}"
+        audio_url_element = soup.select_one("audio#player source")
+        audio_url = (
+            f"https://www.messianica.org.br{audio_url_element['src']}"
+            if audio_url_element
+            else ""
+        )
         content = (
             soup.select_one("section#wa-conteudo")
             .get_text(strip=True)
