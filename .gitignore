@@ -166,3 +166,5 @@ cython_debug/
 # Google Credentials
 
 client_key.json
+
+.venv
