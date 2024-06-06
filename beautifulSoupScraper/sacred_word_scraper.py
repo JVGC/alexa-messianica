@@ -91,7 +91,7 @@ class SacredWordScraper:
 
         item["date"] = self._process_date(item["date"])
 
-        print("Scrapping today's sacred word")
+        print(f"Scrapping {item['date']} sacred word")
         SacredWordSpreadSheet.create_sacred_word(
             _id=item["_id"],
             period=item["period"],
