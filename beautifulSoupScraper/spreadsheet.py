@@ -1,11 +1,12 @@
 from dataclasses import asdict, dataclass
+import json
 from typing import Literal
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 from datetime import date
 
-CLIENT_KEY = {}
+CLIENT_KEY = json.loads(open("./beautifulSoupScraper/client_key.json").read())
 
 
 @dataclass
