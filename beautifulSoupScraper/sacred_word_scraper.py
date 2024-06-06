@@ -28,48 +28,57 @@ class NotAvailableError(Exception):
 
 class SacredWordScraper:
     start_url = "https://www.messianica.org.br/escrito-divino?id={id}"
-    skip_n_days = 0
+    _skip_n_days = 0
+
+    def _is_date_smaller_than_today(self, date_str):
+        d, m, y = date_str.split("/")
+        today_date = date.today()
+        return date(int(y), int(m), int(d)) <= today_date
 
     def _get_content(self):
         data = SacredWordSpreadSheet.get_last_scraped_sacred_word()
-        _id = data._id + 1 + self.skip_n_days
+        _id = data._id + 1 + self._skip_n_days
         response = requests.get(self.start_url.format(id=_id), timeout=5)
         return _id, response.content, data
 
     def scrape_data(self):
-        _id, content, data = self._get_content()
-        soup = BeautifulSoup(content, "html.parser")
+        while True:
+            _id, content, data = self._get_content()
+            soup = BeautifulSoup(content, "html.parser")
 
-        url = self.start_url.format(id=_id)
-        try:
-            title = SCRAPE_FUNCTIONS["title"](soup)
-            period = SCRAPE_FUNCTIONS["period"](soup)
-            date_str = SCRAPE_FUNCTIONS["date"](soup)
-            audio_url = SCRAPE_FUNCTIONS["audio_url"](soup)
-            content = SCRAPE_FUNCTIONS["content"](soup)
-        except Exception as e:
-            d, m, y = data.date.split("/")
-            last_scraped_date = date(int(y), int(m), int(d))
-            today_date = date.today()
-            if last_scraped_date < today_date:
-                # means that for some reason the id does not exist
-                self.skip_n_days += 1
-                return True
-            print("Soup:", soup)
-            print("Error:", e)
-            raise NotAvailableError("Sacred Word is not available yet")
+            url = self.start_url.format(id=_id)
+            try:
+                title = SCRAPE_FUNCTIONS["title"](soup)
+                period = SCRAPE_FUNCTIONS["period"](soup)
+                date_str = SCRAPE_FUNCTIONS["date"](soup)
+                audio_url = SCRAPE_FUNCTIONS["audio_url"](soup)
+                content = SCRAPE_FUNCTIONS["content"](soup)
+            except Exception as e:
+                if self._is_date_smaller_than_today(data.date):
+                    print(f"ID {_id} does not exist. Skipping it.")
+                    self._skip_n_days += 1
+                    continue
+                print("Soup:", soup)
+                print("Error:", e)
+                raise NotAvailableError("Sacred Word is not available yet")
 
-        if not content:
-            raise NotAvailableError("Sacred Word is not available yet")
-        return {
-            "_id": _id,
-            "title": title,
-            "period": period,
-            "date": date_str,
-            "url": url,
-            "audio_url": audio_url,
-            "content": content,
-        }
+            if not self._is_date_smaller_than_today(self._process_date(date_str)):
+                print("Today's sacred word was already scraped.")
+                return None
+
+            if not content:
+                raise NotAvailableError("Sacred Word is not available yet")
+
+            self._skip_n_days = 0
+            return {
+                "_id": _id,
+                "title": title,
+                "period": period,
+                "date": date_str,
+                "url": url,
+                "audio_url": audio_url,
+                "content": content,
+            }
 
     def _process_date(self, date_str):
         date_str = date_str.split(" ")
