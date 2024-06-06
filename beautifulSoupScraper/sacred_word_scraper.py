@@ -22,17 +22,22 @@ MONTHS = {
 }
 
 
+class NotAvailableError(Exception):
+    pass
+
+
 class SacredWordScraper:
     start_url = "https://www.messianica.org.br/escrito-divino?id={id}"
+    skip_n_days = 0
 
     def _get_content(self):
         data = SacredWordSpreadSheet.get_last_scraped_sacred_word()
-        _id = data._id + 1
+        _id = data._id + 1 + self.skip_n_days
         response = requests.get(self.start_url.format(id=_id), timeout=5)
-        return _id, response.content
+        return _id, response.content, data
 
     def scrape_data(self):
-        _id, content = self._get_content()
+        _id, content, data = self._get_content()
         soup = BeautifulSoup(content, "html.parser")
 
         url = self.start_url.format(id=_id)
@@ -43,10 +48,19 @@ class SacredWordScraper:
             audio_url = SCRAPE_FUNCTIONS["audio_url"](soup)
             content = SCRAPE_FUNCTIONS["content"](soup)
         except Exception as e:
+            d, m, y = data.date.split("/")
+            last_scraped_date = date(int(y), int(m), int(d))
+            today_date = date.today()
+            if last_scraped_date < today_date:
+                # means that for some reason the id does not exist
+                self.skip_n_days += 1
+                return True
             print("Soup:", soup)
             print("Error:", e)
-            return None
+            raise NotAvailableError("Sacred Word is not available yet")
 
+        if not content:
+            raise NotAvailableError("Sacred Word is not available yet")
         return {
             "_id": _id,
             "title": title,
