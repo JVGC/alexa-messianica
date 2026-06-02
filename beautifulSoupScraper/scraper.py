@@ -39,7 +39,7 @@ def _connect_spreadsheet(sheet_name: str) -> gspread.Worksheet:
 
 def get_sacred_word_by_date(date_str: str) -> SacredWord:
     sheet = _connect_spreadsheet("sacred_word_v2")
-    cell = sheet.find(date_str, in_column=0)
+    cell = sheet.find(date_str, in_column=2)
 
     if not cell:
         return None
