@@ -1,0 +1,53 @@
+name: Deploy Alexa Skill
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "lambda/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install ASK CLI
+        run: npm install -g ask-cli
+
+      - name: Configure ASK CLI
+        env:
+          ASK_REFRESH_TOKEN: ${{ secrets.ASK_REFRESH_TOKEN }}
+          ASK_VENDOR_ID: ${{ secrets.ASK_VENDOR_ID }}
+        run: |
+          mkdir -p ~/.ask
+          cat > ~/.ask/cli_config <<EOF
+          {"profiles":{"default":{"token":{"refresh_token":"${ASK_REFRESH_TOKEN}"},"vendor_id":"${ASK_VENDOR_ID}"}}}
+          EOF
+
+      - name: Set git credential helper
+        run: git config --global credential.helper '!ask util git-credentials-helper'
+
+      - name: Clone Alexa hosted skill repo
+        run: |
+          git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/5b79572f-7ed2-4290-96e6-f89c1004085e /tmp/alexa-hosted
+
+      - name: Sync Lambda code
+        run: |
+          rsync -av --exclude='app/client_key.json' lambda/ /tmp/alexa-hosted/lambda/
+
+      - name: Commit and push
+        run: |
+          cd /tmp/alexa-hosted
+          git config user.email "github-actions@github.com"
+          git config user.name "GitHub Actions"
+          git add lambda/
+          git diff --staged --quiet || git commit -m "Deploy from GitHub ${{ github.sha }}"
+          git push
